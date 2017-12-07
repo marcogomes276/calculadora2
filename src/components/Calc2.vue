@@ -7,40 +7,95 @@
 			<img class="imagemfundo" src="http://www.1sti.com.br/assets/img/1sti.svg">
 		</div>
 		<div class="D-Calc">
-			<button class="som">+</button>
-			<button class="som">-</button>
-			<button class="som">×</button>
-			<button class="som">÷</button>
-			<button class="igu">=</button>
+			<button class="igu" v-on:click="limpar()">C</button>
+			<button class="som" v-on:click="setOperator('soma')">+</button>
+			<button class="som" v-on:click="setOperator('subtracao')">-</button>
+			<button class="som" v-on:click="setOperator('multiplicacao')">X</button>
+			<button class="som" v-on:click="setOperator('divisao')">÷</button>
+			<button class="igu" v-on:click="resultados()">=</button>
 		</div>
 		<div D-inp>
-			<input class="inp1" type="" name="">
+			<input class="inp1" type="text" v-model="visor">
 		</div>
 		<div class="D-Numeros">
-			<button class="A">1</button>
-			<button class="A">2</button>
-			<button class="A">3</button>
-			<button class="A">4</button>
-			<button class="A">5</button>
-			<button class="A">6</button>
-			<button class="A">7</button>
-			<button class="A">8</button>
-			<button class="A">9</button>
-			<button class="A">0</button>
+			<button class="A" v-on:click="preencher('1')">1</button>
+			<button class="A" v-on:click="preencher('2')">2</button>
+			<button class="A" v-on:click="preencher('3')">3</button>
+			<button class="A" v-on:click="preencher('4')">4</button>
+			<button class="A" v-on:click="preencher('5')">5</button>
+			<button class="A" v-on:click="preencher('6')">6</button>
+			<button class="A" v-on:click="preencher('7')">7</button>
+			<button class="A" v-on:click="preencher('8')">8</button>
+			<button class="A" v-on:click="preencher('9')">9</button>
+			<button class="A" v-on:click="preencher('0')">0</button>
 		</div>
 	</div>
 </template>
 <script>
 	export default {
-  name: 'hello',
-  data () {
-  }
-}
+		name: 'CalculadoraDois',
+		data(){
+			return{
+				fator1: '',
+				fator2: '',
+				operador: null,
+				resultado: 0,
+				visor: null,
+				erro: ''
+			}
+		},
+		methods:{
+			preencher(value){
+					if (this.erro !== '') {}
+					if(this.operador===null){
+						this.fator1 = this.fator1 + value
+						this.visor = this.fator1
+
+					} else{
+						this.fator2 = this.fator2 + value
+						this.visor = this.fator2
+					}
+				},
+			setOperator(operador){
+				this.operador = operador
+			},
+			resultados(){
+				if(this.operador === 'soma') {
+					this.resultado = parseInt(this.fator1) + parseInt(this.fator2)
+					this.visor = this.resultado
+				} else if (this.operador === 'subtracao'){
+					this.resultado = parseInt(this.fator1) - parseInt(this.fator2)
+					this.visor = this.resultado
+				} else if (this.operador === 'multiplicacao') {
+					this.resultado = parseInt(this.fator1) * parseInt(this.fator2)
+					this.visor = this.resultado
+				} else{
+					if (this.fator2 === '0') {
+						this.erro = 'Não há divisão com 0, tente novamente!'
+					} else {
+						this.resultado = parseInt(this.fator1) / parseInt(this.fator2)
+						this.visor = this.resultado
+					}
+				}
+				this.zerar()
+			},
+			zerar(){
+				this.fator1 = ''
+				this.fator2 = ''
+				this.operador = null
+				this.erro = ''
+			},
+			limpar(){
+				this.zerar()
+				this.visor = null
+			}
+			}
+		}
 </script>
 <style scoped>
 	.D-Principal{
 		background-color: black;
-		height: 150vh;	
+		height: 160vh;	
 	}
 	.D-Letra{
 		background-color: #CD00CD;
@@ -58,6 +113,10 @@
 	.inp1{
 		padding: 10px;
 		margin: 10px;
+		border-style: ridge;
+		border-color: #00FFFF;
+		border-width: 7px;
+		background-color: #CD950C;
 		border-style: ridge;
 		border-color: #00FFFF;
 		border-width: 7px;
